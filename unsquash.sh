@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # -*- coding: UTF8 -*-
 
 # Author: Guillaume Bouvier -- guillaume.bouvier@pasteur.fr
@@ -9,9 +9,9 @@
 
 usage ()
 {
-	echo "Usage"
+	echo "Usage: "
 	echo "unsquash filename.sqsh"
-	echo "• -u: unmount the archive"
+	echo "• -u filename.sqsh: unmount the archive"
 }
 
 if [ "$#" -lt 1 ]; then
@@ -19,14 +19,17 @@ if [ "$#" -lt 1 ]; then
     exit
 fi
 
-MNTDIR="/mnt/squashfs"
-
-ARCHIVE=$1
-
-if [ "$ARCHIVE" = "-u" ]; then
-	sudo umount $MNTDIR
-	echo "$MNTDIR unmounted"
+if [ "$1" = "-u" ]; then
+    shift
+    ARCHIVE="$1"
+    MNTDIR="$ARCHIVE:r"
+    sudo umount $MNTDIR \
+        && echo "$MNTDIR unmounted" \
+        && rmdir "$MNTDIR"
 else
-	sudo mount "$ARCHIVE" "$MNTDIR" -t squashfs -o loop
-	echo "$ARCHIVE mounted in $MNTDIR"
+    ARCHIVE="$1"
+    MNTDIR="$ARCHIVE:r"
+    mkdir $MNTDIR \
+        && sudo mount "$ARCHIVE" "$MNTDIR" -t squashfs -o loop \
+        && echo "$ARCHIVE mounted in $MNTDIR"
 fi
