@@ -10,9 +10,14 @@
 usage ()
 {
 	echo "Usage"
-	echo "mount_archive filename.sqsh"
+	echo "unsquash filename.sqsh"
 	echo "• -u: unmount the archive"
 }
+
+if [ "$#" -lt 1 ]; then
+    usage
+    exit
+fi
 
 MNTDIR="/mnt/squashfs"
 
