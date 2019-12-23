@@ -26,7 +26,7 @@ if [ "$1" = "-u" ]; then
 fi
 
 ARCHIVE="$1"
-MNTDIR="$ARCHIVE:r"
+MNTDIR="$ARCHIVE:t:r"
 
 if [ $ACTION = "UNMOUNT" ]; then
     sudo umount $MNTDIR \
