@@ -26,14 +26,16 @@ if [ "$1" = "-u" ]; then
 fi
 
 ARCHIVE="$1"
-MNTDIR="$ARCHIVE:t:r"
+MNTDIR="/mnt/squashfs/$ARCHIVE:t:r"
 
 if [ $ACTION = "UNMOUNT" ]; then
     sudo umount $MNTDIR \
         && echo "$MNTDIR unmounted" \
-        && rmdir "$MNTDIR"
+        && rmdir -v "$MNTDIR" \
+        && rm -v "$MNTDIR:t:r"
 else
     mkdir $MNTDIR \
         && sudo mount "$ARCHIVE" "$MNTDIR" -t squashfs -o loop \
-        && echo "$ARCHIVE mounted in $MNTDIR"
+        && echo "$ARCHIVE mounted in $MNTDIR" \
+        && ln -v -s $MNTDIR
 fi
