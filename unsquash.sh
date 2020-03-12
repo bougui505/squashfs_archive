@@ -29,7 +29,7 @@ ARCHIVE="$1"
 MNTDIR="/mnt/squashfs/$ARCHIVE:t:r"
 
 if [ $ACTION = "UNMOUNT" ]; then
-    sudo umount $MNTDIR \
+    sudo umount -l $MNTDIR \
         && echo "$MNTDIR unmounted" \
         && rmdir -v "$MNTDIR" \
         && rm -v "$MNTDIR:t:r"
